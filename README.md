@@ -1,0 +1,2 @@
+# AviutlAnmScripts
+Aviutl用のスクリプトを公開するためのリポジトリです
