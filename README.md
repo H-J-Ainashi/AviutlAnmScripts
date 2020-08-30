@@ -2,7 +2,7 @@
 Aviutl用のスクリプトを公開するためのリポジトリです
 
 ### ダウンロード方法
-[packagesフォルダ](https://github.com/H-J-Ainashi/AviutlAnmScripts/tree/master/packages)内の各フォルダから、欲しいスクリプトを選択してダウンロードしてください。
+[packagesフォルダ](https://github.com/H-J-Ainashi/AviutlAnmScripts/tree/master/packages)内の各フォルダから、欲しいスクリプトのフォルダを選択してZIPファイルをダウンロードしてください。
 また、DLLのソースファイルは[srcフォルダ](https://github.com/H-J-Ainashi/AviutlAnmScripts/tree/master/src)から欲しいソースファイルを選択してダウンロードしてください。
 
 ### ライセンス
