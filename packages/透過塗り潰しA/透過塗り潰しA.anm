@@ -14,7 +14,7 @@
 
 --透過塗り潰しA
 --track0:不透明度,0,255,255,1
---track1:領域拡張,0,5000,20,1
+--track1:領域拡張,-5000,5000,20,1
 --check0:中心位置を変更,0
 --dialog:領域拡張上端,expandTop=0;領域拡張下端,expandBottom=0;領域拡張左端,expandLeft=0;領域拡張右端,expandRight=0;色/col,color=0xffffff;不透明部分透過/chk,erasing=0;ヘルプ/chk,help=0;
 
@@ -43,7 +43,7 @@ else
     local ex_Bottom = expandBottom + obj.track1
     local ex_Left = expandLeft + obj.track1
     local ex_Right = expandRight + obj.track1
-    
+
     local exTop = (ex_Top > 0 and ex_Top or 0)
     local exBottom = (ex_Bottom > 0 and ex_Bottom or 0)
     local exLeft = (ex_Left > 0 and ex_Left or 0)
@@ -62,13 +62,13 @@ else
 
     obj.effect("領域拡張","上",exTop,"下",exBottom,"左",exLeft,"右",exRight)
     obj.effect("クリッピング","上", clTop, "下", clBottom, "左", clLeft, "右", clRight)
-    
+
     require("Untransparent")
-    
+
     local defr, defg, defb = RGB(color)
     local data, w, h = obj.getpixeldata()
 
     Untransparent.main(data,w,h,erasing,obj.track0,defr,defg,defb)
     obj.putpixeldata(data)
-    
+
 end
