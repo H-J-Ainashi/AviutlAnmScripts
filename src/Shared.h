@@ -9,10 +9,12 @@
 #include <functional>
 #include <thread>
 #include <vector>
+#include <memory>
+#include "..\..\opencv\modules\core\include\opencv2\core.hpp"
 
 using namespace std;
 
-typedef unsigned long DWORD;
+typedef unsigned long integer;
 typedef unsigned char byte;
 
 
@@ -29,7 +31,7 @@ const char license[569] =
 "Copyright 2020 H_J - Ainashi - ";
 
 
-static string getlicense();
+string getlicense();
 
 struct RGBA
 {
@@ -39,59 +41,14 @@ struct RGBA
 	byte r;
 	byte a;
 
+	/// <summary>
+	/// 新しいインスタンスを作成します。
+	/// </summary>
+	/// <param name="b">青色値。</param>
+	/// <param name="g">緑色値。</param>
+	/// <param name="r">赤色値。</param>
+	/// <param name="a">透明度値。</param>
+	RGBA(const byte& b, const byte& g, const byte& r, const byte& a);
+
 };
 
-typedef class _Canvas
-{
-
-public:
-	
-	_Canvas(int width, int height, RGBA* data)
-	{
-
-		canvas = new RGBA*[height];
-		this->width = width;
-		this->height = height;
-		auto input = 0;
-
-		for (int y = 0; y < height; ++y)
-		{
-			canvas[y] = new RGBA[width];
-
-			for (int x = 0; x < width; ++x, ++input)
-				canvas[y][x] = data[input];
-
-		}
-
-	}
-
-	void Copy(RGBA* dest)
-	{
-
-		auto input = 0;
-
-		for (int y = 0; y < height; ++y)
-			for (int x = 0; x < width; ++x, ++input)
-				dest[input] = canvas[y][x];
-
-	}
-
-	void PixelUpdater(RGBA(*converter)(int x, int y))
-	{
-
-		for (int y = 0; y < height; ++y)
-			for (int x = 0; x < width; ++x)
-				canvas[y][x] = converter(x, y);
-
-	}
-
-private:
-	int width;
-	int height;
-	RGBA** canvas;
-	
-}Canvas;
-
-
-
-void PixelConverter(RGBA* data, const int& width, const int& height, function<RGBA(int, int, RGBA)> converter);

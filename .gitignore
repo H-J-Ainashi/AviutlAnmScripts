@@ -2,4 +2,7 @@
 # この .gitignore ファイルは Microsoft(R) Visual Studio によって自動的に作成されました。
 ################################################################################
 
-/packages/透過塗り潰しA/EditFiles/透過塗り潰しA
+/packages/透過塗り潰しA/EditFiles
+/packages/SourceFileManeger
+/.vscode
+/.vs/AviutlAnmScripts/v16/Browse.VC.opendb

@@ -1,0 +1,145 @@
+--[[
+       このファイルはApache License 2.0によって保護されています。
+    このファイルを改変することによって発生した「成果物(Work)」を再配布する場合は、再配布である旨とした期のリンクをREADME.txtに記述してください。
+    ※上記の「成果物(Work)」には、このアニメーション効果を利用して制作された動画を含んでいません。気にせずに安心してご利用ください。
+
+    THIS FILE IS PROTEXTED BY APACHE LICENSE 2.0
+
+    Apache License 2.0: https://github.com/H-J-Ainashi/Aviutl-AnimationEffects/blob/master/LICENSE
+    GitHub: https://github.com/H-J-Ainashi/Aviutl-AnimationEffects
+
+    Copyright 2020 H_J -Ainashi-
+
+]]
+
+@積分軌道A
+--track0:X方向,-255,255,0,0.01
+--track1:Y方向,-255,255,0,0.01
+--track2:Z方向,-255,255,0,0.01
+--track3:拡大率,-300,300,0,0.1
+--dialog:秒速として扱う/chk,usePPS=0;ヘルプ/chk,help=0;
+
+if (help == 1) then
+
+    obj.setfont("MS 明朝", 30, 4, 0xffffff, 0x808080)
+    obj.load("text",
+        [[<s60>[積分軌道A]
+        <s>
+        画像やテキストの透過部分を塗りつぶします。
+
+        不透明度：塗りつぶし部分の不透明度を指定します。
+        領域拡張：か悪辺の描画領域を拡張します。これにより、
+        　　　　　塗り潰し範囲が拡大します。
+        X/Y方向：塗り潰し領域の位置を移動します。
+        中心位置を変更：領域拡張・X/Y方向によって変形した描画
+        　　　　　位置が中心となるように調整します。
+
+        Copyright 2020 H_J -Ainshi-]])
+
+    obj.draw()
+
+else
+
+    local x = 0
+    local y = 0
+    local z = 0
+    local zoom = 0
+
+    --データを格納
+
+    if (usePPS==1) then
+
+        for i=1, obj.frame do
+
+            x = x + (obj.getvalue(0, i / obj.framerate) / obj.framerate)
+            y = y + (obj.getvalue(1, i / obj.framerate) / obj.framerate)
+            z = z + (obj.getvalue(2, i / obj.framerate) / obj.framerate)
+            zoom = zoom + (obj.getvalue(3, i / obj.framerate) / obj.framerate)
+
+        end
+
+    else
+
+        for i=1, obj.frame do
+
+            x = x + obj.getvalue(0, i / obj.framerate)
+            y = y + obj.getvalue(1, i / obj.framerate)
+            z = z + obj.getvalue(2, i / obj.framerate)
+            zoom = zoom + obj.getvalue(3, i / obj.framerate)
+
+        end
+
+    end
+
+    --値を取得する
+
+    obj.ox = obj.ox + x
+    obj.oy = obj.oy + y
+    obj.oz = obj.oz + z
+    obj.zoom = obj.zoom + (zoom / 100)
+
+end
+
+
+@積分軌道（2D角度指定）A
+--track0:速度,-255,255,0,0.01
+--track1:角度,-3600,3600,0,0.01
+--track3:拡大率,-300,300,0,0.1
+--dialog:秒速として扱う/chk,usePPS=0;ヘルプ/chk,help=0;
+
+if (help == 1) then
+
+    obj.setfont("MS 明朝", 30, 4, 0xffffff, 0x808080)
+    obj.load("text",
+        [[<s60>[積分軌道A]
+        <s>
+        画像やテキストの透過部分を塗りつぶします。
+
+        不透明度：塗りつぶし部分の不透明度を指定します。
+        領域拡張：か悪辺の描画領域を拡張します。これにより、
+        　　　　　塗り潰し範囲が拡大します。
+        X/Y方向：塗り潰し領域の位置を移動します。
+        中心位置を変更：領域拡張・X/Y方向によって変形した描画
+        　　　　　位置が中心となるように調整します。
+
+        Copyright 2020 H_J -Ainshi-]])
+
+    obj.draw()
+
+else
+
+    local x = 0
+    local y = 0
+    local zoom = 0
+
+    --データを格納
+
+    if (usePPS==1) then
+
+        for i=1, obj.frame do
+
+            x = x + (obj.getvalue(0, i / obj.framerate) / obj.framerate) * math.cos(obj.track1)
+            y = y + (obj.getvalue(0, i / obj.framerate) / obj.framerate) * math.sin(obj.track1)
+            zoom = zoom + (obj.getvalue(3, i / obj.framerate) / obj.framerate)
+
+        end
+
+    else
+
+        for i=1, obj.frame do
+
+            x = x + obj.getvalue(0, i / obj.framerate) * math.cos(obj.track1)
+            y = y + obj.getvalue(0, i / obj.framerate) * math.sin(obj.track1)
+            zoom = zoom + obj.getvalue(3, i / obj.framerate)
+
+        end
+
+    end
+
+    --値を取得する
+
+    obj.ox = obj.ox + x
+    obj.oy = obj.oy + y
+    obj.zoom = obj.zoom + (zoom / 100)
+
+end

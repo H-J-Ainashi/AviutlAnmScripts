@@ -2,13 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\packages",
+    "\\packages\\積分軌道A",
     "\\packages\\透過塗り潰しA",
-    "\\packages\\透過塗り潰しA\\EditFiles",
-    "\\packages\\透過塗り潰しA\\EditFiles\\透過塗り潰しA",
-    "\\packages\\透過塗り潰しA\\EditFiles\\透過塗り潰しA\\透過塗り潰しA",
-    "\\packages\\透過塗り潰しA\\EditFiles\\透過塗り潰しA\\透過塗り潰しA\\Release",
     "\\src"
   ],
-  "SelectedNode": "\\packages\\透過塗り潰しA\\EditFiles\\透過塗り潰しA\\透過塗り潰しA.sln",
+  "SelectedNode": "\\packages\\積分軌道A\\透過塗り潰しA.lua",
   "PreviewInSolutionExplorer": false
 }
