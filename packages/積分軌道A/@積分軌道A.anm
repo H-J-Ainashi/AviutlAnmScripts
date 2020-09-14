@@ -79,7 +79,7 @@ else
         obj.ox = obj.ox + x
         obj.oy = obj.oy + y
         obj.oz = obj.oz + z
-        obj.zoom = obj.zoom + (zoom / 100)
+        obj.zoom = math.max(0, obj.zoom + (zoom / 100))
 
         --フェード
 
@@ -170,7 +170,7 @@ else
 
         obj.ox = obj.ox + x
         obj.oy = obj.oy + y
-        obj.zoom = obj.zoom + (zoom / 100)
+        obj.zoom = math.max(0, obj.zoom + (zoom / 100))
 
         --フェード
 
