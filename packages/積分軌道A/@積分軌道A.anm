@@ -17,7 +17,7 @@
 --track1:Y方向,-255,255,0,0.01
 --track2:Z方向,-255,255,0,0.01
 --track3:拡大率,-300,300,0,0.1
---dialog:秒速として扱う/chk,usePPS=0;ディレイ(sec),delay=0;ディレイ中の軌道も考慮/chk,delayCheck=0;フェードイン(sec),fadeIn=0;フェードアウト(sec),fadeOut=0;ヘルプ/chk,help=0;
+--dialog:秒速として扱う/chk,usePPS=0;ディレイ(sec),delay=0;ディレイ中の軌道も考慮/chk,delayCheck=0;表示秒数(sec),displayTime=100;フェードイン(sec),fadeIn=0;フェードアウト(sec),fadeOut=0;ヘルプ/chk,help=0;
 
 if (help == 1) then
 
@@ -44,10 +44,11 @@ else
     local y = 0
     local z = 0
     local zoom = 0
+    local endTime = (displayTime < 0 and obj.totaltime or math.min(obj.totaltime, delay + displayTime))
 
     --データを取得
 
-    if (delay <= obj.time) then
+    if (delay <= obj.time and obj.time <= endTime) then
 
         if (usePPS==1) then
 
@@ -89,9 +90,9 @@ else
             buffer = math.min(buffer, (obj.time - delay) / fadeIn)
 
         end
-        if (obj.time > obj.totaltime - fadeOut) then
+        if (obj.time > endTime - fadeOut) then
 
-            buffer = math.min(buffer, (obj.totaltime - obj.time) / fadeOut)
+            buffer = math.min(buffer, (endTime - obj.time) / fadeOut)
 
         end
 
@@ -111,7 +112,7 @@ end
 --track1:角度,-3600,3600,0,0.01
 --track2:拡大率,-300,300,0,0.1
 --track3:ディレイ(sec),0,500,0,0.01
---dialog:秒速として扱う/chk,usePPS=0;ディレイ中の軌道も考慮/chk,delayCheck=0;フェードイン(sec),fadeIn=0;フェードアウト(sec),fadeOut=0;ヘルプ/chk,help=0;
+--dialog:秒速として扱う/chk,usePPS=0;ディレイ中の軌道も考慮/chk,delayCheck=0;表示秒数(sec),displayTime=100;フェードイン(sec),fadeIn=0;フェードアウト(sec),fadeOut=0;ヘルプ/chk,help=0;
 
 if (help == 1) then
 
@@ -137,10 +138,11 @@ else
     local x = 0
     local y = 0
     local zoom = 0
+    local endTime = (displayTime < 0 and obj.totaltime or math.min(obj.totaltime, obj.track3 + displayTime))
 
     --データを取得
 
-    if (obj.track3 <= obj.time) then
+    if (obj.track3 <= obj.time and obj.time <= endTime) then
 
         if (usePPS==1) then
 
@@ -179,9 +181,9 @@ else
             buffer = math.min(buffer, (obj.time - delay) / fadeIn)
 
         end
-        if (obj.time > obj.totaltime - fadeOut) then
+        if (obj.time > endTime - fadeOut) then
 
-            buffer = math.min(buffer, (obj.totaltime - obj.time) / fadeOut)
+            buffer = math.min(buffer, (endTime - obj.time) / fadeOut)
 
         end
 
