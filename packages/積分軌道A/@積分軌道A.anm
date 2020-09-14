@@ -17,7 +17,7 @@
 --track1:Y方向,-255,255,0,0.01
 --track2:Z方向,-255,255,0,0.01
 --track3:拡大率,-300,300,0,0.1
---dialog:秒速として扱う/chk,usePPS=0;ヘルプ/chk,help=0;
+--dialog:秒速として扱う/chk,usePPS=0;ディレイ(sec),delay=0;ディレイ中の軌道も考慮/chk,delayCheck=0;フェードイン(sec),fadeIn=0;フェードアウト(sec),fadeOut=0;ヘルプ/chk,help=0;
 
 if (help == 1) then
 
@@ -45,38 +45,63 @@ else
     local z = 0
     local zoom = 0
 
-    --データを格納
+    --データを取得
 
-    if (usePPS==1) then
+    if (delay <= obj.time) then
 
-        for i=1, obj.frame do
+        if (usePPS==1) then
 
-            x = x + (obj.getvalue(0, i / obj.framerate) / obj.framerate)
-            y = y + (obj.getvalue(1, i / obj.framerate) / obj.framerate)
-            z = z + (obj.getvalue(2, i / obj.framerate) / obj.framerate)
-            zoom = zoom + (obj.getvalue(3, i / obj.framerate) / obj.framerate)
+            for i = (delayCheck == 0 and (delay * obj.framerate) + 1 or 1), obj.frame do
+
+                x = x + (obj.getvalue(0, i / obj.framerate) / obj.framerate)
+                y = y + (obj.getvalue(1, i / obj.framerate) / obj.framerate)
+                z = z + (obj.getvalue(2, i / obj.framerate) / obj.framerate)
+                zoom = zoom + (obj.getvalue(3, i / obj.framerate) / obj.framerate)
+
+            end
+
+        else
+
+            for i = (delayCheck == 0 and (delay * obj.framerate) + 1 or 1), obj.frame do
+
+                x = x + obj.getvalue(0, i / obj.framerate)
+                y = y + obj.getvalue(1, i / obj.framerate)
+                z = z + obj.getvalue(2, i / obj.framerate)
+                zoom = zoom + obj.getvalue(3, i / obj.framerate)
+
+            end
 
         end
+
+        --値を格納
+
+        obj.ox = obj.ox + x
+        obj.oy = obj.oy + y
+        obj.oz = obj.oz + z
+        obj.zoom = obj.zoom + (zoom / 100)
+
+        --フェード
+
+        local buffer = 1.0
+
+        if (obj.time < delay + fadeIn) then
+
+            buffer = math.min(buffer, (obj.time - delay) / fadeIn)
+
+        end
+        if (obj.time > obj.totaltime - fadeOut) then
+
+            buffer = math.min(buffer, (obj.totaltime - obj.time) / fadeOut)
+
+        end
+
+        obj.alpha = obj.alpha * buffer
 
     else
 
-        for i=1, obj.frame do
-
-            x = x + obj.getvalue(0, i / obj.framerate)
-            y = y + obj.getvalue(1, i / obj.framerate)
-            z = z + obj.getvalue(2, i / obj.framerate)
-            zoom = zoom + obj.getvalue(3, i / obj.framerate)
-
-        end
+        obj.alpha = 0
 
     end
-
-    --値を取得する
-
-    obj.ox = obj.ox + x
-    obj.oy = obj.oy + y
-    obj.oz = obj.oz + z
-    obj.zoom = obj.zoom + (zoom / 100)
 
 end
 
@@ -84,8 +109,9 @@ end
 @積分軌道（2D角度指定）A
 --track0:速度,-255,255,0,0.01
 --track1:角度,-3600,3600,0,0.01
---track3:拡大率,-300,300,0,0.1
---dialog:秒速として扱う/chk,usePPS=0;ヘルプ/chk,help=0;
+--track2:拡大率,-300,300,0,0.1
+--track3:ディレイ(sec),0,500,0,0.01
+--dialog:秒速として扱う/chk,usePPS=0;ディレイ中の軌道も考慮/chk,delayCheck=0;フェードイン(sec),fadeIn=0;フェードアウト(sec),fadeOut=0;ヘルプ/chk,help=0;
 
 if (help == 1) then
 
@@ -112,34 +138,60 @@ else
     local y = 0
     local zoom = 0
 
-    --データを格納
+    --データを取得
 
-    if (usePPS==1) then
+    if (obj.track3 <= obj.time) then
 
-        for i=1, obj.frame do
+        if (usePPS==1) then
 
-            x = x + (obj.getvalue(0, i / obj.framerate) / obj.framerate) * math.cos(obj.track1)
-            y = y + (obj.getvalue(0, i / obj.framerate) / obj.framerate) * math.sin(obj.track1)
-            zoom = zoom + (obj.getvalue(3, i / obj.framerate) / obj.framerate)
+            for i = (delayCheck == 0 and (obj.track3 * obj.framerate) + 1 or 1), obj.frame do
+
+                x = x + (obj.getvalue(0, i / obj.framerate) / obj.framerate) * math.cos(obj.track1)
+                y = y + (obj.getvalue(0, i / obj.framerate) / obj.framerate) * math.sin(obj.track1)
+                zoom = zoom + (obj.getvalue(2, i / obj.framerate) / obj.framerate)
+
+            end
+
+        else
+
+            for i = (delayCheck == 0 and (obj.track3 * obj.framerate) + 1 or 1), obj.frame do
+
+                x = x + obj.getvalue(0, i / obj.framerate) * math.cos(obj.track1)
+                y = y + obj.getvalue(0, i / obj.framerate) * math.sin(obj.track1)
+                zoom = zoom + obj.getvalue(2, i / obj.framerate)
+
+            end
 
         end
+
+        --値を格納
+
+        obj.ox = obj.ox + x
+        obj.oy = obj.oy + y
+        obj.zoom = obj.zoom + (zoom / 100)
+
+        --フェード
+
+        local buffer = 1.0
+
+        if (obj.time < delay + fadeIn) then
+
+            buffer = math.min(buffer, (obj.time - delay) / fadeIn)
+
+        end
+        if (obj.time > obj.totaltime - fadeOut) then
+
+            buffer = math.min(buffer, (obj.totaltime - obj.time) / fadeOut)
+
+        end
+
+        obj.alpha = obj.alpha * buffer
+
 
     else
 
-        for i=1, obj.frame do
-
-            x = x + obj.getvalue(0, i / obj.framerate) * math.cos(obj.track1)
-            y = y + obj.getvalue(0, i / obj.framerate) * math.sin(obj.track1)
-            zoom = zoom + obj.getvalue(3, i / obj.framerate)
-
-        end
+        obj.alpha = 0
 
     end
-
-    --値を取得する
-
-    obj.ox = obj.ox + x
-    obj.oy = obj.oy + y
-    obj.zoom = obj.zoom + (zoom / 100)
 
 end
